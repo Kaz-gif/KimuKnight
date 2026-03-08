@@ -3,18 +3,23 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    //Controls
     public InputAction MoveAction;
+    public InputAction shootAction;
+    public Transform launchPoint; // Where the arrow starts (e.g., the bow)
+    public GameObject arrowPrefab;
+
+    void OnEnable() => shootAction.Enable();
+    void OnDisable() => shootAction.Disable();
     
     public float speed = 0.1f;
     Animator animator;
     void Start()
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     {
         MoveAction.Enable();
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {  
         Vector2 move = MoveAction.ReadValue<Vector2>();
@@ -46,5 +51,25 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector2(5, 5);
         }
 
+        // WasPressedThisFrame(); prevents the player from "machine-gunning" arrows just by holding the button down.
+
+        if (shootAction.WasPressedThisFrame())
+        {
+            Shoot();
+        }
+
+    }
+
+    void Shoot()
+    {
+        // Create the arrow at the launch point
+        GameObject arrow = Instantiate(arrowPrefab, launchPoint.position, transform.rotation);
+
+        // Adjust arrow direction based on player scale (flipping)
+        // If your player is flipped (localScale.x is negative), flip the arrow
+        if (transform.localScale.x < 0)
+        {
+            arrow.transform.rotation = Quaternion.Euler(0, 0, 180f);
+        }
     }
 }
