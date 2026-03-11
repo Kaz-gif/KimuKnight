@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets/Scripts/PlayerController.cs" />
+    <Compile Include="Assets/Scripts/SaveSystem.cs" />
     <Compile Include="Assets/Scripts/sceneManager.cs" />
     <Compile Include="Assets/Scripts/ArrowShoot.cs" />
   </ItemGroup>
